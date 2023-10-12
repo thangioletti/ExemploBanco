@@ -25,14 +25,24 @@ namespace ExemploBancoDados.Model
                 int linhas = connection.Execute(sql, tipo);
                 Console.WriteLine($"Tipo inserido - {linhas} linhas afetadas");
             }
-
-
         }
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            Read();
+            Console.WriteLine("Digite o id para excluir");
+            int id = Convert.ToInt32(Console.ReadLine());
+
+            using (MySqlConnection connection = new MySqlConnection(conectionString))
+            {
+                var parameters = new { Id = id };
+                string sql = "DELETE FROM TIPO WHERE ID = @Id";
+                connection.Execute(sql, parameters);
+                Console.WriteLine("Tipo excluido com sucesso");
+            }
         }
+
+
 
         public void Read()
         {
@@ -48,8 +58,6 @@ namespace ExemploBancoDados.Model
 
         public void ReadModoRuim()
         {
-            try
-            {
 
                 string conectionString = "Server=localhost;Database=cerveja;User=root;Password=root;";
                 MySqlConnection connection = new MySqlConnection(conectionString);
@@ -64,21 +72,55 @@ namespace ExemploBancoDados.Model
                     }
                 }
                 
-            } catch(MySqlException ex)
-            {
-                Console.WriteLine("Erro MySql");
-                Console.WriteLine(ex.Message);
-            } catch (Exception ex)
-            {
-                Console.WriteLine("Erro");
-                Console.WriteLine(ex.Message);
-            }
             
+            
+        }
+
+        private TipoEntity getById(int id)
+        {
+            using (MySqlConnection con = new MySqlConnection(conectionString))
+            {
+                string sql = "SELECT ID as Id, DESCRICAO as Descricao FROM TIPO WHERE ID = @Id";
+                var parameters = new { Id = id };
+                return con.QueryFirst<TipoEntity>(sql, parameters);
+            }
+        }
+
+        private TipoEntity getTipoEntity()
+        {
+            Console.WriteLine("Digite o id para editar");
+            int id = Convert.ToInt32(Console.ReadLine());
+            return getById(id);
+        }
+
+        private MySqlConnection GetConnection()
+        {
+            return new MySqlConnection(conectionString);
+        }
+        private TipoEntity updateTipoDescricao(TipoEntity tipo)
+        {
+            Console.WriteLine($"Digite a nova descrição para o tipo {tipo.Descricao}");
+            tipo.Descricao = Console.ReadLine();
+            return tipo;
+        }
+
+        private int Execute(string sql, object obj)
+        {
+            using (MySqlConnection con = GetConnection())
+            {
+                return con.Execute(sql, obj);
+            }
         }
 
         public void Update()
         {
-            throw new NotImplementedException();
+            Read();
+            TipoEntity tipo = getTipoEntity();
+            tipo = updateTipoDescricao(tipo);
+
+            string sql = "UPDATE TIPO SET DESCRICAO = @Descricao WHERE ID = @Id";
+            Execute(sql, tipo);
+            Console.WriteLine("Tipo alterado com sucesso!");
         }
     }
 }

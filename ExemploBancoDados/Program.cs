@@ -1,4 +1,6 @@
-﻿using ExemploBancoDados.Model;
+﻿using ExemploBancoDados.Helpers;
+using ExemploBancoDados.Model;
+using MySql.Data.MySqlClient;
 
 namespace ExemploBancoDados
 {
@@ -6,10 +8,20 @@ namespace ExemploBancoDados
     {
         static void Main(string[] args)
         {
-            TipoModel tipoModel = new TipoModel();
-            tipoModel.Read();
-            tipoModel.Create();
-            tipoModel.Read();
+            try { 
+                Menu menu = new Menu();
+                menu.MostrarMenuPrincipal();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("Erro MySql");
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro");
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
