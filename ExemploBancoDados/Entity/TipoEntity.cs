@@ -8,12 +8,12 @@ namespace ExemploBancoDados.Entity
 {
     public class TipoEntity
     {
-        public int Id { get; set; }
-        public string Descricao { get; set; }
+        public int ID { get; set; }
+        public string DESCRICAO { get; set; }
 
         public void Mostrar()
         {
-            Console.WriteLine($"{Id} - {Descricao}");
+            Console.WriteLine($"{ID} - {DESCRICAO}");
         }
     }
 }

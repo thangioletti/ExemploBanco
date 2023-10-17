@@ -12,5 +12,7 @@ namespace ExemploBancoDados.Entity
         public string DESCRICAO { get; set; }
         public double PRECO { get; set; }
         public int TIPO_ID { get; set; }
+
+        public TipoEntity TIPO { get; set; }
     }
 }

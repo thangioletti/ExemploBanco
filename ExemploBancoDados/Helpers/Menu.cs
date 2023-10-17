@@ -11,6 +11,7 @@ namespace ExemploBancoDados.Helpers
     {
 
         private TipoModel _tipoModel = new TipoModel();
+        private ProdutoModel _produtoModel = new ProdutoModel();
         public void MostrarMenuPrincipal()
         {
             switch (MenuPrincipal())
@@ -19,7 +20,7 @@ namespace ExemploBancoDados.Helpers
                     MostrarMenuCrud(_tipoModel);
                     break;
                 case 2:
-
+                    MostrarMenuCrud(_produtoModel);
                     break;
                 default:
                     Console.WriteLine("Opção invalida");

@@ -6,22 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExemploBancoDados.Entity;
+using ExemploBancoDados.Helpers;
 
 namespace ExemploBancoDados.Model
 {
-    public class TipoModel : ICrud
+    public class TipoModel : Database, ICrud
     {
-        public string conectionString = "Server=localhost;Database=cerveja;User=root;Password=root;";
 
         public void Create()
         {
             TipoEntity tipo = new TipoEntity();
             Console.WriteLine("Digite a descricao");
-            tipo.Descricao = Console.ReadLine();
+            tipo.DESCRICAO = Console.ReadLine();
 
             using (MySqlConnection connection = new MySqlConnection(conectionString))
             {
-                string sql = "INSERT INTO TIPO VALUE (NULL, @Descricao)";
+                string sql = "INSERT INTO TIPO VALUE (NULL, @DESCRICAO)";
                 int linhas = connection.Execute(sql, tipo);
                 Console.WriteLine($"Tipo inserido - {linhas} linhas afetadas");
             }
@@ -36,7 +36,7 @@ namespace ExemploBancoDados.Model
             using (MySqlConnection connection = new MySqlConnection(conectionString))
             {
                 var parameters = new { Id = id };
-                string sql = "DELETE FROM TIPO WHERE ID = @Id";
+                string sql = "DELETE FROM TIPO WHERE ID = @ID";
                 connection.Execute(sql, parameters);
                 Console.WriteLine("Tipo excluido com sucesso");
             }
@@ -48,7 +48,7 @@ namespace ExemploBancoDados.Model
         {
             using (MySqlConnection con = new MySqlConnection(conectionString))
             {
-                IEnumerable<TipoEntity> tipos = con.Query<TipoEntity>("SELECT ID as Id, DESCRICAO as Descricao FROM TIPO");
+                IEnumerable<TipoEntity> tipos = con.Query<TipoEntity>("SELECT ID, DESCRICAO FROM TIPO");
                 foreach(TipoEntity tipo in tipos)
                 {
                     tipo.Mostrar();
@@ -56,32 +56,12 @@ namespace ExemploBancoDados.Model
             }
         }
 
-        public void ReadModoRuim()
-        {
-
-                string conectionString = "Server=localhost;Database=cerveja;User=root;Password=root;";
-                MySqlConnection connection = new MySqlConnection(conectionString);
-                connection.Open();                
-                string sql = "SELECT * FROM TIPO";
-                MySqlCommand command = new MySqlCommand(sql, connection);
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Console.WriteLine($"{reader["ID"]} - {reader["DESCRICAO"]}");
-                    }
-                }
-                
-            
-            
-        }
-
         private TipoEntity getById(int id)
         {
             using (MySqlConnection con = new MySqlConnection(conectionString))
             {
-                string sql = "SELECT ID as Id, DESCRICAO as Descricao FROM TIPO WHERE ID = @Id";
-                var parameters = new { Id = id };
+                string sql = "SELECT ID, DESCRICAO FROM TIPO WHERE ID = @ID";
+                var parameters = new { ID = id };
                 return con.QueryFirst<TipoEntity>(sql, parameters);
             }
         }
@@ -93,24 +73,15 @@ namespace ExemploBancoDados.Model
             return getById(id);
         }
 
-        private MySqlConnection GetConnection()
-        {
-            return new MySqlConnection(conectionString);
-        }
+      
         private TipoEntity updateTipoDescricao(TipoEntity tipo)
         {
-            Console.WriteLine($"Digite a nova descrição para o tipo {tipo.Descricao}");
-            tipo.Descricao = Console.ReadLine();
+            Console.WriteLine($"Digite a nova descrição para o tipo {tipo.DESCRICAO}");
+            tipo.DESCRICAO = Console.ReadLine();
             return tipo;
         }
 
-        private int Execute(string sql, object obj)
-        {
-            using (MySqlConnection con = GetConnection())
-            {
-                return con.Execute(sql, obj);
-            }
-        }
+       
 
         public void Update()
         {
@@ -118,7 +89,7 @@ namespace ExemploBancoDados.Model
             TipoEntity tipo = getTipoEntity();
             tipo = updateTipoDescricao(tipo);
 
-            string sql = "UPDATE TIPO SET DESCRICAO = @Descricao WHERE ID = @Id";
+            string sql = "UPDATE TIPO SET DESCRICAO = @DESCRICAO WHERE ID = @ID";
             Execute(sql, tipo);
             Console.WriteLine("Tipo alterado com sucesso!");
         }
