@@ -14,42 +14,7 @@ namespace ExemploBancoDados.Model
     public class ProdutoModel : Database, ICrud
     {
 
-        private string ChangeValue(string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                Console.WriteLine($"Atual = {value} deseja alterar ? S/N");
-                char resposta = Convert.ToChar(Console.ReadLine().ToUpper());
-                if (resposta == 'S')
-                {
-                    Console.WriteLine("Digite o novo valor");
-                    value = Console.ReadLine();
-                }
-            }
-            else
-            {
-                value = Console.ReadLine();
-            }
-            return value;
-        }
-        private double ChangeValue(double value)
-        {
-            if (value > 0)
-            {
-                Console.WriteLine($"Atual = {value} deseja alterar ? S/N");
-                char resposta = Convert.ToChar(Console.ReadLine().ToUpper());
-                if (resposta == 'S')
-                {
-                    Console.WriteLine("Digite o novo valor");
-                    value = Convert.ToDouble(Console.ReadLine());
-                }
-            }
-            else
-            {
-                value = Convert.ToDouble(Console.ReadLine());
-            }
-            return value;
-        }
+       
 
         private int ChangeTipo(ProdutoEntity produto)
         {
@@ -75,9 +40,9 @@ namespace ExemploBancoDados.Model
         private ProdutoEntity Popular(ProdutoEntity produto)
         {
             Console.WriteLine("Digite o nome do produto");
-            produto.DESCRICAO = ChangeValue(produto.DESCRICAO);
+            produto.DESCRICAO = ConsoleHelper.ChangeValue(produto.DESCRICAO);
             Console.WriteLine("Digite o preço do produto");
-            produto.PRECO = ChangeValue(produto.PRECO);
+            produto.PRECO = ConsoleHelper.ChangeValue(produto.PRECO);
 
             produto.TIPO_ID = ChangeTipo(produto);
             return produto;
@@ -120,9 +85,13 @@ namespace ExemploBancoDados.Model
             }
         }
 
-        private ProdutoEntity GetById()
+        public ProdutoEntity GetById(int id = 0)
         {
-            return ListProdutoEntity().Where(o => o.ID == GetIndex()).ToList()[0];
+            if (id == 0)
+            {
+                id = GetIndex();
+            }
+            return ListProdutoEntity().Where(o => o.ID == id).ToList()[0];
         }
 
         private int GetIndex()

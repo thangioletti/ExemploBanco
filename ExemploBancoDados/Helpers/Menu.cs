@@ -12,6 +12,7 @@ namespace ExemploBancoDados.Helpers
 
         private TipoModel _tipoModel = new TipoModel();
         private ProdutoModel _produtoModel = new ProdutoModel();
+        private PedidoModel _pedidoModel = new PedidoModel();
         public void MostrarMenuPrincipal()
         {
             switch (MenuPrincipal())
@@ -21,6 +22,9 @@ namespace ExemploBancoDados.Helpers
                     break;
                 case 2:
                     MostrarMenuCrud(_produtoModel);
+                    break;
+                case 3:
+                    _pedidoModel.Create();
                     break;
                 default:
                     Console.WriteLine("Opção invalida");
@@ -73,6 +77,7 @@ namespace ExemploBancoDados.Helpers
 
             Console.WriteLine("1 - Tipos");
             Console.WriteLine("2 - Produtos");
+            Console.WriteLine("3 - Realizar pedido");
             return Convert.ToInt32(Console.ReadLine());
         }
 
