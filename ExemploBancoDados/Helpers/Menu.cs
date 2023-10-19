@@ -26,6 +26,9 @@ namespace ExemploBancoDados.Helpers
                 case 3:
                     _pedidoModel.Create();
                     break;
+                case 4:
+                    _pedidoModel.Read();
+                    break;
                 default:
                     Console.WriteLine("Opção invalida");
                     Console.ReadLine();
@@ -78,6 +81,7 @@ namespace ExemploBancoDados.Helpers
             Console.WriteLine("1 - Tipos");
             Console.WriteLine("2 - Produtos");
             Console.WriteLine("3 - Realizar pedido");
+            Console.WriteLine("4 - Visualizar pedidos");
             return Convert.ToInt32(Console.ReadLine());
         }
 

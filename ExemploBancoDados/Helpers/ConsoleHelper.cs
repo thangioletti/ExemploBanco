@@ -12,9 +12,7 @@ namespace ExemploBancoDados.Helpers
         {
             if (!string.IsNullOrEmpty(value))
             {
-                Console.WriteLine($"Atual = {value} deseja alterar ? S/N");
-                char resposta = Convert.ToChar(Console.ReadLine().ToUpper());
-                if (resposta == 'S')
+                if (PerguntarSimNao($"Atual = {value} deseja alterar") == 'S')
                 {
                     Console.WriteLine("Digite o novo valor");
                     value = Console.ReadLine();
@@ -29,10 +27,8 @@ namespace ExemploBancoDados.Helpers
         public static double ChangeValue(double value)
         {
             if (value > 0)
-            {
-                Console.WriteLine($"Atual = {value} deseja alterar ? S/N");
-                char resposta = Convert.ToChar(Console.ReadLine().ToUpper());
-                if (resposta == 'S')
+            {                      
+                if (PerguntarSimNao($"Atual = {value} deseja alterar") == 'S')
                 {
                     Console.WriteLine("Digite o novo valor");
                     value = Convert.ToDouble(Console.ReadLine());
@@ -44,5 +40,31 @@ namespace ExemploBancoDados.Helpers
             }
             return value;
         }
+
+        public static char PerguntarSimNao(string mensagem = "Deseja continuar")
+        {
+            Console.WriteLine($"{mensagem}? S/N");
+            return Convert.ToChar(Console.ReadLine().ToUpper());
+        }
+
+        public static double AskDouble(string pergunta)
+        {
+            Console.WriteLine(pergunta);
+            return Convert.ToDouble(Console.ReadLine());
+        }
+
+        public static int AskInt(string pergunta)
+        {
+            Console.WriteLine(pergunta);
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
+        public static string AskString(string pergunta)
+        {
+            Console.WriteLine(pergunta);
+            return Console.ReadLine();
+        }
+
+
     }
 }
